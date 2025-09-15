@@ -1,127 +1,132 @@
-/*Develop a Menu driven program to demonstrate the following operations of Arrays.
-��MENU��-
-1.CREATE
-2.DISPLAY
-3.INSERT
-4.DELETE
-5.LINEAR SEARCH
-6.EXIT*/
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-int array[50],i,num,pos,size,del,search,choice;
+#define MAX 100
 
-void create_array(){
-	cout<<"Enter size of ur array (max limit 50 only) =";
-	cin>>size;
-	cout<<"Enter "<<size<<" Elements = "<<endl;
-	for(i=0;i<size;i++)
-	cin>>array[i];
-}
+class ArrayOperations {
+    int arr[MAX];
+    int size;
 
+public:
+    ArrayOperations() {
+        size = 0;
+    }
 
-void display_array(){
-	cout<<"Your Elements are = ";
-	for(i=0;i<size;i++)
-	cout<<array[i]<<" ";
-	cout<<endl;
-}
+    void create() {
+        cout << "Enter number of elements: ";
+        cin >> size;
+        if (size > MAX) {
+            cout << "Size exceeds maximum limit.\n";
+            size = 0;
+            return;
+        }
+        cout << "Enter " << size << " elements:\n";
+        for (int i = 0; i < size; i++) {
+            cin >> arr[i];
+        }
+        cout << "Array created successfully!\n";
+    }
 
-void insert_array(){
-	cout<<"Enter the data you want to insert = "<<endl;
-	cin>>num;
-	cout<<"Enter the position at which u want to insert = "<<endl;
-	cin>>pos;
-	 
-	 if(pos<=0 || pos > size+1)
-	 {
-	 	cout<<"Invalid Insertion"<<endl;
-	 }
-	 else{
-	 	for(i=size;i>=pos-1;i--){
-	 		array[i+1]=array[i];
-		 }
-		 array[pos-1] = num;
-		 size++;
-	 	cout<<"Your Elements are = "<<endl;
-	for(i=0;i<size;i++)
-	cout<<array[i]<<" ";
-	 }
-}
+    void display() {
+        if (size == 0) {
+            cout << "Array is empty!\n";
+            return;
+        }
+        cout << "Array elements are: ";
+        for (int i = 0; i < size; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
 
-void delete_array(){
-	cout<<"Enter the position you want to delete = ";
-	cin>>del;
-	if(del<=0||del>size) 
-	{
-		cout<<"Invalid Input"<<endl;
-	}
-	else{
-		for(i=del-1;i<size-1;i++){
-			array[i] = array[i+1];
-			
-		}
-		size--;
-		cout<<"Array is = ";
-		for(i=0;i<size;i++)
-		{
-		cout<<array[i]<<" ";	
-		}
-	}
-	
-}
+    void insert() {
+        if (size == MAX) {
+            cout << "Array is full, cannot insert.\n";
+            return;
+        }
+        int pos, element;
+        cout << "Enter position (1 to " << size + 1 << "): ";
+        cin >> pos;
+        if (pos < 1 || pos > size + 1) {
+            cout << "Invalid position!\n";
+            return;
+        }
+        cout << "Enter element to insert: ";
+        cin >> element;
 
+        // shifting
+        for (int i = size; i >= pos; i--) {
+            arr[i] = arr[i - 1];
+        }
+        arr[pos - 1] = element;
+        size++;
+        cout << "Element inserted successfully!\n";
+    }
 
-void linear_search_array(){
-	cout<<"Enter the element which u want to search = ";
-	cin>>search;
-	bool flag = false;
-	for(i=0;i<size;i++){
-		if(array[i]==search){
-			flag= true;
-			break;
-		}
-		
-	}
-	if(flag){
-			cout<<"Element found at position"<<i+1<<endl;
-	}
-	else{cout<<"Not found";
-	}
-}
-int main(){
-	/*create_array();
-	display_array();
-	insert_array();
-	delete_array();
-	linear_search_array();*/
-do{	
-	cout<<"MENU \n1.CREATE \n2.DISPLAY \n3.INSERT \n4.DELET \n5.LINEAR SEARCH \n6.EXIT\n Select number on basis of this menu :-";
-	cin>>choice;
-	
+    void deleteElement() {
+        if (size == 0) {
+            cout << "Array is empty, nothing to delete.\n";
+            return;
+        }
+        int pos;
+        cout << "Enter position to delete (1 to " << size << "): ";
+        cin >> pos;
+        if (pos < 1 || pos > size) {
+            cout << "Invalid position!\n";
+            return;
+        }
+        // shifting
+        for (int i = pos - 1; i < size - 1; i++) {
+            arr[i] = arr[i + 1];
+        }
+        size--;
+        cout << "Element deleted successfully!\n";
+    }
 
-	switch(choice) {
-    case 1:
-        create_array();
-        break;
-    case 2:
-        display_array();
-        break;
-    case 3:
-        insert_array();
-        break;
-    case 4:
-        delete_array();
-        break;
-    case 5:
-        linear_search_array();
-        break;
-    case 6:
-        cout << "Visit Again";
-        return 0;
-    default:
-        cout << "Invalid Input";
-}
-}while(choice < 6);
+    void linearSearch() {
+        if (size == 0) {
+            cout << "Array is empty!\n";
+            return;
+        }
+        int key, found = 0;
+        cout << "Enter element to search: ";
+        cin >> key;
+        for (int i = 0; i < size; i++) {
+            if (arr[i] == key) {
+                cout << "Element found at position " << i + 1 << endl;
+                found = 1;
+            }
+        }
+        if (!found)
+            cout << "Element not found.\n";
+    }
+};
 
+int main() {
+    ArrayOperations obj;
+    int choice;
+
+    do {
+        cout << "\n---- MENU ----\n";
+        cout << "1. CREATE\n";
+        cout << "2. DISPLAY\n";
+        cout << "3. INSERT\n";
+        cout << "4. DELETE\n";
+        cout << "5. LINEAR SEARCH\n";
+        cout << "6. EXIT\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: obj.create(); break;
+            case 2: obj.display(); break;
+            case 3: obj.insert(); break;
+            case 4: obj.deleteElement(); break;
+            case 5: obj.linearSearch(); break;
+            case 6: cout << "Exiting program...\n"; break;
+            default: cout << "Invalid choice! Try again.\n";
+        }
+    } while (choice != 6);
+
+    return 0;
 }
